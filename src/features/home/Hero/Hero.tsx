@@ -1,5 +1,3 @@
-import Container from "@/components/ui/Container";
-
 import HeroBackground from "./HeroBackground";
 import HeroContent from "./HeroContent";
 import HeroScrollIndicator from "./HeroScrollIndicator";
