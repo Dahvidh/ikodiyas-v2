@@ -1,0 +1,223 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
+type Category = "Featured Work" | "Personal Projects" | "Other Work";
+
+type Project = {
+  id: number;
+  title: string;
+  category: string;
+  description: string;
+  video: string;
+};
+
+const projects: Record<Category, Project[]> = {
+  "Featured Work": [
+    {
+      id: 1,
+      title: "Web3 Global Conference",
+      category: "Web3 / Event",
+      description:
+        "A cinematic event experience designed to bring a global Web3 conference to life.",
+      video:
+        "https://res.cloudinary.com/dgqcoefvx/video/upload/v1783816345/hero_g6qmqy.mp4",
+    },
+    {
+      id: 2,
+      title: "LENSING Studio",
+      category: "Creative Studio",
+      description:
+        "A cinematic visual identity and portfolio experience for LENSING.",
+      video:
+        "https://res.cloudinary.com/dgqcoefvx/video/upload/v1783816345/hero_g6qmqy.mp4",
+    },
+    {
+      id: 3,
+      title: "Brand Campaign",
+      category: "Commercial",
+      description:
+        "A visual campaign built around atmosphere, movement and storytelling.",
+      video:
+        "https://res.cloudinary.com/dgqcoefvx/video/upload/v1783816345/hero_g6qmqy.mp4",
+    },
+  ],
+
+  "Personal Projects": [
+    {
+      id: 4,
+      title: "Dahvidh's Portfolio",
+      category: "Web Development",
+      description:
+        "A personal portfolio showcasing development, creative and Web3 work.",
+      video:
+        "https://res.cloudinary.com/dgqcoefvx/video/upload/v1783816345/hero_g6qmqy.mp4",
+    },
+    {
+      id: 5,
+      title: "Regalium",
+      category: "Web3 / GameFi",
+      description:
+        "A visual experience for a GameFi token ecosystem.",
+      video:
+        "https://res.cloudinary.com/dgqcoefvx/video/upload/v1783816345/hero_g6qmqy.mp4",
+    },
+    {
+      id: 6,
+      title: "LENSING Experiments",
+      category: "Creative Development",
+      description:
+        "Experimental digital experiences exploring motion, video and interaction.",
+      video:
+        "https://res.cloudinary.com/dgqcoefvx/video/upload/v1783816345/hero_g6qmqy.mp4",
+    },
+  ],
+
+  "Other Work": [
+    {
+      id: 7,
+      title: "Bitbox",
+      category: "Church Platform",
+      description:
+        "A digital platform designed for church media and community experiences.",
+      video:
+        "https://res.cloudinary.com/dgqcoefvx/video/upload/v1783816345/hero_g6qmqy.mp4",
+    },
+    {
+      id: 8,
+      title: "E-Commerce Experience",
+      category: "E-Commerce",
+      description:
+        "A modern commerce experience focused on products, storytelling and conversion.",
+      video:
+        "https://res.cloudinary.com/dgqcoefvx/video/upload/v1783816345/hero_g6qmqy.mp4",
+    },
+    {
+      id: 9,
+      title: "Coffee World",
+      category: "Marketplace",
+      description:
+        "A marketplace concept connecting coffee producers with customers.",
+      video:
+        "https://res.cloudinary.com/dgqcoefvx/video/upload/v1783816345/hero_g6qmqy.mp4",
+    },
+  ],
+};
+
+const categories: Category[] = [
+  "Featured Work",
+  "Personal Projects",
+  "Other Work",
+];
+
+export default function Work() {
+  const [activeCategory, setActiveCategory] =
+    useState<Category>("Featured Work");
+
+  const activeProjects = projects[activeCategory];
+
+  return (
+    <main className="min-h-screen bg-[#050505] px-6 pb-32 pt-32 text-white">
+      <div className="mx-auto max-w-7xl">
+
+        {/* Header */}
+        <div className="mb-16 text-center">
+          <p className="mb-5 text-xs uppercase tracking-[0.35em] text-amber-400">
+            Selected Work
+          </p>
+
+          <h1 className="text-5xl font-semibold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
+            Things we've
+            <br />
+            <span className="text-white/40">made.</span>
+          </h1>
+
+          <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-white/50 sm:text-lg">
+            A collection of projects, experiments and creative work from
+            LENSING.
+          </p>
+        </div>
+
+        {/* Category Menu */}
+        <div className="mb-16 flex flex-wrap justify-center gap-3">
+          {categories.map((category) => {
+            const isActive = activeCategory === category;
+
+            return (
+              <button
+                key={category}
+                type="button"
+                onClick={() => setActiveCategory(category)}
+                className={`rounded-full border px-5 py-3 text-sm transition-all duration-300 ${
+                  isActive
+                    ? "border-amber-400 bg-amber-400 text-black"
+                    : "border-white/10 bg-white/[0.03] text-white/50 hover:border-white/30 hover:text-white"
+                }`}
+              >
+                {category}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Projects */}
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {activeProjects.map((project) => (
+            <Link
+              key={project.id}
+              to={`/work/${project.id}`}
+              className="group block"
+            >
+              {/* Video */}
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
+                <video
+                  src={project.video}
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  onMouseEnter={(event) => {
+                    event.currentTarget.play().catch(() => {});
+                  }}
+                  onMouseLeave={(event) => {
+                    event.currentTarget.pause();
+                    event.currentTarget.currentTime = 0;
+                  }}
+                />
+
+                {/* Overlay */}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+                {/* Play indicator */}
+                <div className="absolute bottom-5 right-5 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/40 text-sm opacity-0 backdrop-blur-md transition-opacity duration-300 group-hover:opacity-100">
+                  ▶
+                </div>
+              </div>
+
+              {/* Information */}
+              <div className="mt-5">
+                <div className="mb-2 flex items-center justify-between gap-4">
+                  <h2 className="text-xl font-medium tracking-tight">
+                    {project.title}
+                  </h2>
+
+                  <span className="text-xs uppercase tracking-[0.2em] text-white/30">
+                    0{project.id}
+                  </span>
+                </div>
+
+                <p className="mb-2 text-xs uppercase tracking-[0.2em] text-amber-400/80">
+                  {project.category}
+                </p>
+
+                <p className="text-sm leading-relaxed text-white/40">
+                  {project.description}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+}
